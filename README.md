@@ -126,31 +126,40 @@ The analytical solution is $x^* = y^* = 0.5$ with Lagrange multiplier $\lambda^*
 
 ## Installation and Usage
 
-### 1. Create and activate a virtual environment
+This project uses [uv](https://github.com/astral-sh/uv) for fast, reproducible environment management.
+
+### 1. Install uv (if not already installed)
 
 ```bash
-python -m venv .venv
+pip install uv
+# or: curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### 2. Create and activate the virtual environment
+
+```bash
+uv venv
 source .venv/bin/activate   # Linux / macOS
 # .venv\Scripts\activate    # Windows
 ```
 
-### 2. Install dependencies
+### 3. Install dependencies
 
 ```bash
-pip install -r requirements.txt
+uv pip install -r requirements.txt
 ```
 
-### 3. Run the example
+### 4. Run the example
 
 ```bash
 python src/main.py
 ```
 
-This trains the PINN, prints the loss at each epoch (every 500 steps), and saves `trajectories.png` showing the convergence of $(x(t), y(t), \lambda(t))$ toward the KKT point.
+This trains the PINN, prints the loss at each epoch (every 500 steps), and opens two interactive **Plotly** charts showing the convergence of $(x(t), y(t), \lambda(t))$ toward the KKT point and the training loss curve.
 
-### 4. Interactive notebook (Google Colab)
+### 5. Interactive notebook (Google Colab)
 
-Open `notebooks/tutorial.ipynb` directly in [Google Colab](https://colab.research.google.com/) — the first cell installs all required packages automatically.
+Open `notebooks/tutorial.ipynb` directly in [Google Colab](https://colab.research.google.com/) — the first cell installs all required packages automatically via `pip` (the standard Colab way). For local execution, use `uv pip install -r requirements.txt` as above.
 
 ---
 
@@ -164,7 +173,7 @@ After training, the PINN trajectories converge to the analytical solution:
 | $y^*$ | ≈ 0.50 | 0.50 |
 | $\lambda^*$ | ≈ −1.00 | −1.00 |
 
-The saved plot `trajectories.png` visualises this convergence over the pseudo-time domain $t \in [0, T]$.
+The interactive **Plotly** charts produced by `src/main.py` visualise this convergence over the pseudo-time domain $t \in [0, T]$.
 
 ---
 
