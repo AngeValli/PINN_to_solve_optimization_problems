@@ -179,7 +179,7 @@ The interactive **Plotly** charts produced by `src/main.py` visualise this conve
 
 ## References
 
-* Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). *Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations.* Journal of Computational Physics.
-* Arrow, K. J., Hurwicz, L., & Uzawa, H. (1958). *Studies in linear and non-linear programming.* Stanford University Press.
-* Karush, W. (1939). *Minima of functions of several variables with inequalities as side constraints.* M.Sc. Dissertation, University of Chicago.
-* Kuhn, H. W., & Tucker, A. W. (1951). *Nonlinear programming.* Proceedings of the 2nd Berkeley Symposium on Mathematical Statistics and Probability.
+* Raissi, M., Perdikaris, P., & Karniadakis, G. E. (2019). Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. Journal of Computational physics, 378, 686-707.
+* Arrow, K. J., Hurwicz, L., Uzawa, H., Chenery, H. B., Johnson, S., & Karlin, S. (1958). Studies in linear and non-linear programming (Vol. 2). Stanford: Stanford University Press.
+* Karush, W. (1939). Minima of functions of several variables with inequalities as side constraints. M. Sc. Dissertation. Dept. of Mathematics, Univ. of Chicago.
+* Kuhn, H. W., & Tucker, A. W. (1951). Proceedings of 2nd berkeley symposium. In Proc. 2nd Berkeley Symp. (pp. 481-492).
