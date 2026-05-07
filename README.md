@@ -126,7 +126,9 @@ The analytical solution is $x^* = y^* = 0.5$ with Lagrange multiplier $\lambda^*
 
 ## Installation and Usage
 
-This project uses [uv](https://github.com/astral-sh/uv) for fast, reproducible environment management.
+This project uses [uv](https://github.com/astral-sh/uv) for fast, reproducible environment management. You can run the project in two different ways depending on your workflow and preferences. For a standard local execution, you can directly launch the `main.py` script, which orchestrates the full pipeline including training, evaluation, and visualization. Alternatively, if you prefer an interactive and cloud-based environment, you can use the Jupyter notebook provided in `notebooks/tutorial.ipynb`. The notebook is fully compatible with Google Colab, allowing you to run the tutorial without installing anything locally while still being able to modify parameters, inspect intermediate results, and experiment interactively.
+
+## Using script file
 
 ### 1. Install uv (if not already installed)
 
@@ -157,7 +159,9 @@ python src/main.py
 
 This trains the PINN, prints the loss at each epoch (every 500 steps), and opens two interactive **Plotly** charts showing the convergence of $(x(t), y(t), \lambda(t))$ toward the KKT point and the training loss curve.
 
-### 5. Interactive notebook (Google Colab)
+## Using notebook
+
+## 1. Interactive notebook (Google Colab)
 
 Open `notebooks/tutorial.ipynb` directly in [Google Colab](https://colab.research.google.com/) — the first cell installs all required packages automatically via `pip` (the standard Colab way). For local execution, use `uv pip install -r requirements.txt` as above.
 

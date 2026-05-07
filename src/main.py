@@ -25,7 +25,6 @@ from plotly.subplots import make_subplots
 from toy_problem import ANALYTICAL_SOLUTION
 from pinn_solver import PINN, train
 
-
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
@@ -156,7 +155,7 @@ def main():
     )
 
     fig.update_xaxes(title_text="t")
-    fig.show()
+    fig.write_image("figtrajectories.png")
 
     # ------------------------------------------------------------------
     # 5. Interactive Plotly: training loss curve (log scale)
@@ -173,7 +172,7 @@ def main():
         yaxis_title="Loss",
         yaxis_type="log",       # log scale makes convergence visible
     )
-    fig_loss.show()
+    fig_loss.write_image("figloss.png")
 
 
 if __name__ == "__main__":
