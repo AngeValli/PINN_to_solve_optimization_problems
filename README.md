@@ -22,41 +22,55 @@ A step-by-step tutorial demonstrating how to solve constrained optimization prob
 
 ### Optimization Problem
 
-We consider the standard non-linear programming (NLP) problem:
+Let $n, m, p \in ℕ$. We consider the standard non-linear programming (NLP) problem:
 
-$$\min_{x \in \mathbb{R}^n} \quad f(x)$$
+```math
+\min_{x \in ℝ^n} \quad f(x)
+```
+```math
+\text{subject to} \quad h_i(x) = 0, \quad i = 1, \dots, p
+```
+```math
+\quad\quad\quad\quad\quad\;\; g_j(x) \le 0, \quad j = 1, \dots, m
+```
 
-$$\text{subject to} \quad h_i(x) = 0, \quad i = 1, \dots, p$$
-
-$$\quad\quad\quad\quad\quad\;\; g_j(x) \le 0, \quad j = 1, \dots, m$$
-
-where $f : \mathbb{R}^n \to \mathbb{R}$ is the objective, $h : \mathbb{R}^n \to \mathbb{R}^p$ are equality constraints, and $g : \mathbb{R}^n \to \mathbb{R}^m$ are inequality constraints.
+where $f : ℝ^n \to ℝ$ is the objective, $h : ℝ^n \to ℝ^p$ are equality constraints, and $g : ℝ^n \to ℝ^m$ are inequality constraints.
 
 The **Lagrangian** associated with this problem is:
 
-$$L(x, \lambda, \mu) = f(x) + \lambda^\top h(x) + \mu^\top g(x)$$
+```math
+L(x, \lambda, \mu) = f(x) + \lambda^\top h(x) + \mu^\top g(x)
+```
 
-where $\lambda \in \mathbb{R}^p$ are the equality multipliers and $\mu \in \mathbb{R}^m_{\ge 0}$ are the inequality (KKT) multipliers.
+where $\lambda \in ℝ^p$ are the equality multipliers and $\mu \in ℝ^m_+$ are the inequality (KKT) multipliers.
 
 ---
 
 ### KKT Conditions
 
-A point $x^*$ is a local minimum (under suitable regularity conditions) if and only if there exist multipliers $\lambda^* \in \mathbb{R}^p$ and $\mu^* \in \mathbb{R}^m_{\ge 0}$ satisfying the **KKT conditions**:
+A point $x^\*$ is a local minimum (under suitable regularity conditions) if and only if there exist multipliers $\lambda^\* \in ℝ^p$ and $\mu^\* \in ℝ^m_+$ satisfying the **KKT conditions**:
 
 1. **Stationarity**
-$$\nabla_x L(x^*, \lambda^*, \mu^*) = \nabla f(x^*) + \sum_i \lambda^*_i \nabla h_i(x^*) + \sum_j \mu^*_j \nabla g_j(x^*) = 0$$
+```math
+\nabla_x L(x^*, \lambda^*, \mu^*) = \nabla f(x^*) + \sum_i \lambda^*_i \nabla h_i(x^*) + \sum_j \mu^*_j \nabla g_j(x^*) = 0
+```
 
 2. **Primal Feasibility**
-$$h(x^*) = 0, \qquad g(x^*) \le 0$$
+```math
+h(x^*) = 0, \qquad g(x^*) \le 0
+```
 
 3. **Dual Feasibility**
-$$\mu^* \ge 0$$
+```math
+\mu^* \ge 0
+```
 
 4. **Complementary Slackness**
-$$\mu^*_j \, g_j(x^*) = 0, \quad j = 1, \dots, m$$
+```math
+\mu^*_j \, g_j(x^*) = 0, \quad j = 1, \dots, m
+```
 
-Finding $(x^*, \lambda^*, \mu^*)$ satisfying these conditions is equivalent to finding the root of a coupled system of equations.
+Finding $(x^ \*, \lambda^\*, \mu^\*)$ satisfying these conditions is equivalent to finding the root of a coupled system of equations.
 
 ---
 
@@ -64,17 +78,25 @@ Finding $(x^*, \lambda^*, \mu^*)$ satisfying these conditions is equivalent to f
 
 Instead of solving the KKT system as a static root-finding problem, we **embed it in a continuous-time dynamical system** whose equilibrium coincides with the KKT point. This is achieved via **primal-dual gradient flow** dynamics:
 
-$$\frac{dx}{dt} = -\nabla_x L(x, \lambda, \mu)$$
+```math
+\frac{dx}{dt} = -\nabla_x L(x, \lambda, \mu)
+```
 
-$$\frac{d\lambda}{dt} = \nabla_\lambda L(x, \lambda, \mu) = h(x)$$
+```math
+\frac{d\lambda}{dt} = \nabla_\lambda L(x, \lambda, \mu) = h(x)
+```
 
-$$\frac{d\mu}{dt} = \left[\nabla_\mu L(x, \lambda, \mu)\right]_+ = \left[g(x)\right]_+$$
+```math
+\frac{d\mu}{dt} = \left[\nabla_\mu L(x, \lambda, \mu)\right]_+ = \left[g(x)\right]_+
+```
 
-where $[\cdot]_+ = \max(\cdot, 0)$ projects onto the non-negative orthant, enforcing dual feasibility $\mu \ge 0$. At the equilibrium $\frac{dz}{dt} = 0$ (where $z = (x, \lambda, \mu)$), the KKT conditions are recovered.
+where $[\cdot]_+ = \max(\cdot, 0)$ projects onto the non-negative orthant, enforcing dual feasibility $\mu \ge 0$. At the equilibrium $\frac{dz}{dt} = 0$ (where $$z = (x, \lambda, \mu)$$), the KKT conditions are recovered.
 
 We pair this ODE system with **initial conditions** $z(0) = z_0$ (arbitrary starting point) to form a well-posed **Initial Value Problem (IVP)**:
 
-$$\dot{z}(t) = F(z(t)), \qquad z(0) = z_0, \qquad t \in [0, T]$$
+```math
+\dot{z}(t) = F(z(t)), \qquad z(0) = z_0, \qquad t \in [0, T]
+```
 
 ---
 
@@ -84,13 +106,38 @@ Rather than using a classical numerical integrator (e.g., Runge-Kutta), we param
 
 The network is trained to minimize a **physics-informed loss** composed of three terms:
 
-$$\mathcal{L}(\theta) = \mathcal{L}_{\text{ODE}}(\theta) + \mathcal{L}_{\text{IC}}(\theta) + \mathcal{L}_{\text{CS}}(\theta)$$
+```math
+\mathcal{L}(\theta) = \mathcal{L}_{\text{ODE}}(\theta) + \mathcal{L}_{\text{IC}}(\theta) + \mathcal{L}_{\text{CS}}(\theta)
+```
 
-| Term | Expression | Purpose |
-|---|---|---|
-| **ODE residual** | $\mathcal{L}_{\text{ODE}} = \frac{1}{N}\sum_{k=1}^{N}\left\|\dot{\hat{z}}_\theta(t_k) - F(\hat{z}_\theta(t_k))\right\|^2$ | Enforce gradient-flow dynamics |
-| **Initial condition** | $\mathcal{L}_{\text{IC}} = \left\|\hat{z}_\theta(0) - z_0\right\|^2$ | Anchor the trajectory at $t=0$ |
-| **Compl. slackness** | $\mathcal{L}_{\text{CS}} = \frac{1}{N}\sum_{k=1}^{N}\left\|\hat{\mu}_\theta(t_k) \odot g(\hat{x}_\theta(t_k))\right\|^2$ | Enforce $\mu \cdot g(x) = 0$ |
+<div align="center">
+  <table>
+    <thead>
+      <tr>
+        <th align="center">Term</th>
+        <th align="center">Expression</th>
+        <th align="center">Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td align="center"><strong>ODE residual</strong></td>
+        <td align="center">$\mathcal{L}_{\text{ODE}} = \frac{1}{N}\sum_{k=1}^{N}\left\|\dot{\hat{z}}_\theta(t_k) - F(\hat{z}_\theta(t_k))\right\|^2$</td>
+        <td align="center">Enforce gradient-flow dynamics</td>
+      </tr>
+      <tr>
+        <td align="center"><strong>Initial condition</strong></td>
+        <td align="center">$\mathcal{L}_{\text{IC}} = \left\|\hat{z}_\theta(0) - z_0\right\|^2$</td>
+        <td align="center">Anchor the trajectory at $t=0$</td>
+      </tr>
+      <tr>
+        <td align="center"><strong>Complementarity slackness</strong></td>
+        <td align="center">$\mathcal{L}_{\text{CS}} = \frac{1}{N}\sum_{k=1}^{N}\left\|\hat{\mu}_\theta(t_k) \odot g(\hat{x}_\theta(t_k))\right\|^2$</td>
+        <td align="center">Enforce $\mu \cdot g(x) = 0$</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 The time derivative $\dot{\hat{z}}_\theta(t_k)$ is computed **exactly** via `jax.grad`, making the loss fully differentiable and enabling gradient-based optimization with Optax.
 
@@ -100,9 +147,13 @@ The time derivative $\dot{\hat{z}}_\theta(t_k)$ is computed **exactly** via `jax
 
 The tutorial uses the following small but illustrative problem:
 
-$$\min_{x, y} \quad f(x, y) = x^2 + y^2$$
+```math
+\min_{x, y} \quad f(x, y) = x^2 + y^2
+```
 
-$$\text{subject to} \quad h(x, y) = x + y - 1 = 0$$
+```math
+\text{subject to} \quad h(x, y) = x + y - 1 = 0
+```
 
 The analytical solution is $x^* = y^* = 0.5$ with Lagrange multiplier $\lambda^* = -1$. The PINN should converge to this point from an arbitrary initialization.
 
